@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
    <metadata>
        <id>Imagnr</id>
@@ -8,7 +8,6 @@
        <owners>Mat�as Dieguez</owners>
        <licenseUrl>https://github.com/matiasdieguez/imagnr/blob/master/LICENSE</licenseUrl>
        <projectUrl>https://github.com/matiasdieguez/imagnr</projectUrl>
-       <iconUrl></iconUrl>
        <requireLicenseAcceptance>true</requireLicenseAcceptance>
        <description>
          Imaginr is a Image Tags Cognitive Recognizer

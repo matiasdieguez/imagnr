@@ -11,10 +11,16 @@
         public string Value { get; set; }
 
         /// <summary>
-        /// Minimum Similarity result of the Levenshtein distance to recognize as found tag
+        /// Minimum Similarity percent result of the Levenshtein distance to recognize as found tag
+        /// 0 to 1
         /// </summary>
         public double MinimumSimilarity { get; set; }
-        
+
+        /// <summary>
+        /// Score to ponderate the tag
+        /// </summary>
+        public double Score = 1;
+
         /// <summary>
         /// Indicates this as mandatory string to recognize as found tag
         /// </summary>

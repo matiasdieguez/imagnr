@@ -2,6 +2,7 @@
 using Microsoft.ProjectOxford.Vision.Contract;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -56,14 +57,17 @@ namespace Imagnr
         {
             var result = new Result();
 
-            string condensedText = await AzureCognitiveServicesHandwrittenText(image);
+            string condensedText = await HandwrittenTextRecognition(image);
 
             foreach (var entity in Catalog)
             {
-                var entityScore = 0;
+                var entityScore = 0d;
+                var addToResults = true;
 
                 foreach (var tag in entity.Tags)
                 {
+                    var tagFound = false;
+
                     for (var c = 0; c < condensedText.Length; c++)
                     {
                         try
@@ -71,16 +75,23 @@ namespace Imagnr
                             var subSource = condensedText.Substring(c, tag.Value.Length);
                             var similarity = CalculateSimilarity(subSource, tag.Value);
                             if (similarity >= tag.MinimumSimilarity)
-                                entityScore++;
+                            {
+                                entityScore += tag.Score;
+                                tagFound = true;
+                            }
                         }
                         catch
                         {
                             break;
                         }
                     }
+
+                    if (tag.Required && !tagFound)
+                        addToResults = false;
                 }
 
-                result.RecognizedEntities.Add(new RecognizedEntity { Name = entity.Name, Score = entityScore });
+                if (addToResults)
+                    result.RecognizedEntities.Add(new RecognizedEntity { Name = entity.Name, Score = entityScore });
             }
 
             return result;
@@ -91,7 +102,7 @@ namespace Imagnr
         /// </summary>
         /// <param name="image">Image byte array</param>
         /// <returns>Condensed text string with OCR results</returns>
-        private async Task<string> AzureCognitiveServicesHandwrittenText(byte[] image)
+        private async Task<string> HandwrittenTextRecognition(byte[] image)
         {
             var client = new VisionServiceClient(AzureCognitiveServicesKey);
 
@@ -99,11 +110,17 @@ namespace Imagnr
             using (var photoStream = new MemoryStream(image))
                 hwResult = await client.CreateHandwritingRecognitionOperationAsync(photoStream);
 
-            var r = await client.GetHandwritingRecognitionOperationResultAsync(hwResult);
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            while (stopwatch.Elapsed.TotalSeconds < 2) {/*wait*/}
+            stopwatch.Stop();
+
+            var response = await client.GetHandwritingRecognitionOperationResultAsync(hwResult);
 
             var condensedText = string.Empty;
 
-            foreach (var l in r.RecognitionResult.Lines)
+            foreach (var l in response.RecognitionResult.Lines)
                 foreach (var w in l.Words)
                     condensedText += w.Text;
 

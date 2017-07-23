@@ -15,6 +15,6 @@ namespace Imagnr
         /// <summary>
         /// The list of Recognized entities with percent
         /// </summary>
-        public List<RecognizedEntity> RecognizedEntities { get; set; }
+        public List<RecognizedEntity> RecognizedEntities = new List<RecognizedEntity>();
     }
 }
