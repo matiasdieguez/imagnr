@@ -1,11 +1,10 @@
 # Imagnr
 Imaginr is a Image Tags Cognitive Recognizer
 
+# This is a work in progress 
+
 Having an image and a catalog of text tags, Imagnr gives you a .NET Standard library to do a cognitive catalog search 
 based on the text appearing in the image. Uses Levenshtein Distance Algorithm to find matches of tags with a configurable similarity level.
-
-##Platform Support
-*.NET Standard 1.5
 
 ## Dependencies
 Imagnr uses Computer Vision from Azure Cognitive Services to extract OCR data from images, so you need a subscription to it.
@@ -19,8 +18,7 @@ PM> install-package imagnr
 
 ## How to use
  Example
-`
-``csharp
+```csharp
 //Create a recognizer:
 var recognizer = new Imagnr.Recognizer{ AzureCognitiveServicesKey = "YOUR_AZURE_COGNITIVE_SERVICES_KEY"};
 
