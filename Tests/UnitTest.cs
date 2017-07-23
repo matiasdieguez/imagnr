@@ -18,7 +18,7 @@ namespace Tests
         {
 
             //Create a recognizer:
-            var imagnr = new Imagnr.Recognizer("db7b7ec6bdbd41cbae8cb9e2cbec9783");
+            var imagnr = new Imagnr.Recognizer("key");
 
             //Create entities with tags:
             var heinz = new Imagnr.Entity
