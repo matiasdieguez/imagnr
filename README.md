@@ -18,8 +18,7 @@ PM> install-package imagnr
 
 ## How to use
  Example
-`
-``csharp
+```csharp
 //Create a recognizer:
 var recognizer = new Imagnr.Recognizer{ AzureCognitiveServicesKey = "YOUR_AZURE_COGNITIVE_SERVICES_KEY"};
 
