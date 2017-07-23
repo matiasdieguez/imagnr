@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+   <metadata>
+       <id>Imagnr</id>
+       <version>$version$</version>
+       <title>Imagnr</title>
+       <authors>Mat�as Dieguez</authors>
+       <owners>Mat�as Dieguez</owners>
+       <licenseUrl>https://github.com/matiasdieguez/imagnr/blob/master/LICENSE</licenseUrl>
+       <projectUrl>https://github.com/matiasdieguez/imagnr</projectUrl>
+       <iconUrl></iconUrl>
+       <requireLicenseAcceptance>true</requireLicenseAcceptance>
+       <description>
+         Imaginr is a Image Tags Cognitive Recognizer
+       </description>
+       <summary>
+		Having an image and a catalog of text tags, Imagnr gives you a PCL library to do a cognitive catalog search based on the text appearing in the image. Uses Levenshtein Distance Algorithm to find matches of tags with a configurable similarity level.. View full project page for README
+       </summary>
+     <releaseNotes>
+     </releaseNotes>
+       <tags>Computer Vision,Azure,Cognitive Services,OCR,Image Recognition,Brand Recognition,Text Recognition,Tag Recognition</tags>
+       <dependencies>
+			<dependency id="Microsoft.ProjectOxford.Vision" version="1.0.393" />
+	   </dependencies>
+   </metadata>
+</package>
