@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Imagnr
@@ -32,6 +33,18 @@ namespace Imagnr
         public string AzureCognitiveServicesKey { get; set; }
 
         /// <summary>
+        /// Total timeout for Azure HandwrittenRegicognition 
+        /// The value is in milliseconds
+        /// </summary>
+        public double AzureHandwrittenRecognitionTimeout { get; private set; }
+
+        /// <summary>
+        /// Azure HandwrittenRegicognition requires the execution of two api operations and wait some time between calls
+        /// The value is in milliseconds
+        /// </summary>
+        public double AzureHandwrittenRecognitionInterval { get; private set; }
+
+        /// <summary>
         /// The Catalog of Entities loaded to recognize
         /// </summary>
         public List<Entity> Catalog = new List<Entity>();
@@ -42,10 +55,14 @@ namespace Imagnr
         /// </summary>
         /// <param name="azureCognitiveServicesKey">Your subscription key for Azure Cognitive Services</param>
         /// <param name="azureCognitiveServicesApiUrl">Your Azure region Cognitive Services API URL</param>
-        public Recognizer(string azureCognitiveServicesKey)
+        /// <param name="azureHandwrittenRecognitionTimeout">Total Timeout</param>
+        /// <param name="azureHandwrittenRecognitionInterval">Wait interval between two api operations calls</param>
+        public Recognizer(string azureCognitiveServicesKey, string azureCognitiveServicesApiUrl = "", double azureHandwrittenRecognitionTimeout = 10000, double azureHandwrittenRecognitionInterval = 1000)
         {
-            //AzureCognitiveServicesApiUrl = azureCognitiveServicesApiUrl;
             AzureCognitiveServicesKey = azureCognitiveServicesKey;
+            AzureCognitiveServicesApiUrl = azureCognitiveServicesApiUrl;
+            AzureHandwrittenRecognitionTimeout = azureHandwrittenRecognitionTimeout;
+            AzureHandwrittenRecognitionInterval = azureHandwrittenRecognitionInterval;
         }
 
         /// <summary>
@@ -58,6 +75,8 @@ namespace Imagnr
             var result = new Result();
 
             string condensedText = await HandwrittenTextRecognition(image);
+            if (string.IsNullOrEmpty(condensedText))
+                return result;
 
             foreach (var entity in Catalog)
             {
@@ -86,6 +105,7 @@ namespace Imagnr
                         }
                     }
 
+
                     if (tag.Required && !tagFound)
                         addToResults = false;
                 }
@@ -93,6 +113,9 @@ namespace Imagnr
                 if (addToResults)
                     result.RecognizedEntities.Add(new RecognizedEntity { Name = entity.Name, Score = entityScore });
             }
+
+            if (result.RecognizedEntities.Count > 1)
+                result.RecognizedEntities = result.RecognizedEntities.OrderByDescending(x => x.Score).ToList();
 
             return result;
         }
@@ -104,28 +127,50 @@ namespace Imagnr
         /// <returns>Condensed text string with OCR results</returns>
         private async Task<string> HandwrittenTextRecognition(byte[] image)
         {
-            var client = new VisionServiceClient(AzureCognitiveServicesKey);
+            var client = AzureCognitiveServicesApiUrl == string.Empty ?
+                            new VisionServiceClient(AzureCognitiveServicesKey) :
+                            new VisionServiceClient(AzureCognitiveServicesKey, AzureCognitiveServicesApiUrl);
 
             HandwritingRecognitionOperation hwResult = null;
             using (var photoStream = new MemoryStream(image))
                 hwResult = await client.CreateHandwritingRecognitionOperationAsync(photoStream);
 
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            var timeout = new Stopwatch();
+            timeout.Start();
 
-            while (stopwatch.Elapsed.TotalSeconds < 2) {/*wait*/}
-            stopwatch.Stop();
+            HandwritingRecognitionOperationResult response;
+            do
+            {
+                //iteration interval
+                var waitInterval = new Stopwatch();
+                waitInterval.Start();
+                while (waitInterval.Elapsed.TotalMilliseconds < AzureHandwrittenRecognitionInterval) {/*wait*/}
+                waitInterval.Stop();
 
-            var response = await client.GetHandwritingRecognitionOperationResultAsync(hwResult);
+                response = await client.GetHandwritingRecognitionOperationResultAsync(hwResult);
+            }
+            while (timeout.Elapsed.TotalMilliseconds < AzureHandwrittenRecognitionTimeout &&
+                   response.Status == HandwritingRecognitionOperationStatus.Running);
 
-            var condensedText = string.Empty;
+            if (timeout.Elapsed.TotalMilliseconds == AzureHandwrittenRecognitionTimeout &&
+                response.Status == HandwritingRecognitionOperationStatus.Running)
+                return string.Empty;
 
-            foreach (var l in response.RecognitionResult.Lines)
-                foreach (var w in l.Words)
-                    condensedText += w.Text;
+            timeout.Stop();
 
-            condensedText = condensedText.ToLower();
-            return condensedText;
+            if (response.Status == HandwritingRecognitionOperationStatus.Succeeded)
+            {
+                var condensedText = string.Empty;
+
+                foreach (var l in response.RecognitionResult.Lines)
+                    foreach (var w in l.Words)
+                        condensedText += w.Text;
+
+                condensedText = condensedText.ToLower();
+                return condensedText;
+            }
+            else
+                return string.Empty;
         }
 
         /// <summary>

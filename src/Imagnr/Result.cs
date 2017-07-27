@@ -8,11 +8,6 @@ namespace Imagnr
     public class Result
     {
         /// <summary>
-        /// Status
-        /// </summary>
-        public string Status { get; set; }
-
-        /// <summary>
         /// The list of Recognized entities with percent
         /// </summary>
         public List<RecognizedEntity> RecognizedEntities = new List<RecognizedEntity>();
