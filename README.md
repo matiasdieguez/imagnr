@@ -1,11 +1,10 @@
 # ![Logo](https://raw.githubusercontent.com/matiasdieguez/imagnr/master/icon.png) Imagnr
-# Imagnr
 Imagnr is a Cognitive Recognizer of Image Tags
 
 Having an image and a catalog of text tags, Imagnr gives you a library to do a cognitive search based on the text appearing in the image. 
 Uses Levenshtein distance algorithm over condensed OCR results to find matches of tags with a configurable similarity level.
 
-##Platform Support
+## Platform Support
 .NET Portable Class Library
 
 ## Dependencies
@@ -88,8 +87,8 @@ IMPORTANT: You must set your valid api key and image paths
 * https://docs.microsoft.com/en-us/nuget/guides/create-net-standard-packages-vs2017
 * https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/quickstarts/csharp#RecognizeText
 
-##Tags
+## Tags
 Computer Vision, Azure, Cognitive Services, OCR, Image Recognition, Brand Recognition, Text Recognition, Tag Recognition
 
-##Resources
+## Resources
 Icons made by http://www.freepik.com from https://www.flaticon.com/ licensed by http://creativecommons.org/licenses/by/3.0/ 
