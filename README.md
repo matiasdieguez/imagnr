@@ -1,3 +1,4 @@
+# ![Logo](https://raw.githubusercontent.com/matiasdieguez/imagnr/master/icon.png) Imagnr
 # Imagnr
 Imagnr is a Cognitive Recognizer of Image Tags
 
