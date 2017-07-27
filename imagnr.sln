@@ -20,6 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{1A79A30E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B07E6323-64D7-41FC-BB4D-A08E51898330}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagnrWeb", "Samples\ImagnrWeb\ImagnrWeb.csproj", "{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{CE8BC002-615C-45CB-AB6E-FEE8649B1720}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,8 +38,15 @@ Global
 		{B07E6323-64D7-41FC-BB4D-A08E51898330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B07E6323-64D7-41FC-BB4D-A08E51898330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B07E6323-64D7-41FC-BB4D-A08E51898330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE66EAD7-11B6-4EB8-B46C-B62A09F4BE5C} = {CE8BC002-615C-45CB-AB6E-FEE8649B1720}
 	EndGlobalSection
 EndGlobal
