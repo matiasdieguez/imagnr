@@ -46,7 +46,7 @@ namespace Tests
             });
 
             //Search in Heinz folder
-            foreach (var image in Directory.GetFiles("images\\heinz", "*.jpg"))
+            foreach (var image in Directory.GetFiles("images\\heinzketchup", "*.jpg"))
             {
                 var results = imagnr.Search(GetImageAsByteArray(image)).Result;
                 Assert.AreEqual(results.RecognizedEntities[0].Name, imagnr.Catalog[0].Name);
@@ -61,8 +61,8 @@ namespace Tests
         }
 
         /// <summary>
-        /// This test loads the recognizer's catalog with two entities 
-        /// and takes the images in the specified as input
+        /// This test loads the recognizer's catalog with 3 Heinz products
+        /// is expected to return in first place the best match
         /// </summary>
         [TestMethod]
         public void TestMethod()
@@ -76,20 +76,43 @@ namespace Tests
                 Name = "Heinz Ketchup",
                 Tags = new List<Tag>
                 {
-                    new Tag { Value = "Heinz", MinimumSimilarity = 0.8, Required = true, Score = 2 },
+                    new Tag { Value = "Heinz", MinimumSimilarity = 0.8 },
                     new Tag { Value = "Tomato", MinimumSimilarity = 0.5 },
-                    new Tag { Value = "Ketchup", MinimumSimilarity = 0.8, Required = true }
+                    new Tag { Value = "Ketchup", MinimumSimilarity = 0.8 , Score=10}
                 }
             });
 
-            //load image into byte[]
-            byte[] image = null;
-            using (var fileStream = new FileStream("images\\heinz\\heinz3.jpg", FileMode.Open, FileAccess.Read))
-            using (var binaryReader = new BinaryReader(fileStream))
-                image = binaryReader.ReadBytes((int)fileStream.Length);
+            imagnr.Catalog.Add(new Entity
+            {
+                Name = "Heinz Yellow Mustard",
+                Tags = new List<Tag>
+                {
+                    new Tag { Value = "Heinz", MinimumSimilarity = 0.8},
+                    new Tag { Value = "Yellow", MinimumSimilarity = 0.5 },
+                    new Tag { Value = "Mustard", MinimumSimilarity = 0.8, Score=10}
+                }
+            });
+
+            imagnr.Catalog.Add(new Entity
+            {
+                Name = "Heinz Sweet Relish",
+                Tags = new List<Tag>
+                {
+                    new Tag { Value = "Heinz", MinimumSimilarity = 0.8},
+                    new Tag { Value = "Sweet", MinimumSimilarity = 0.5 },
+                    new Tag { Value = "Relish", MinimumSimilarity = 0.8, Score=10}
+                }
+            });
 
             //Search for entity tags in image
-            var results = imagnr.Search(image).Result;
+            var results0 = imagnr.Search(GetImageAsByteArray("images\\heinz\\ketchup.jpg")).Result;
+            Assert.AreEqual(results0.RecognizedEntities[0].Name, imagnr.Catalog[0].Name);
+
+            var results1 = imagnr.Search(GetImageAsByteArray("images\\heinz\\mustard.jpg")).Result;
+            Assert.AreEqual(results1.RecognizedEntities[0].Name, imagnr.Catalog[1].Name);
+
+            var results2 = imagnr.Search(GetImageAsByteArray("images\\heinz\\relish.jpg")).Result;
+            Assert.AreEqual(results2.RecognizedEntities[0].Name, imagnr.Catalog[2].Name);
         }
 
         /// <summary>

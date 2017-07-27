@@ -18,6 +18,8 @@ PM> install-package imagnr
  ```
 
 ## How to use
+See samples in the Test Methods of https://github.com/matiasdieguez/imagnr/blob/master/Tests/UnitTest.cs
+
  Add using 
 ```csharp
  using Imagnr;
@@ -25,34 +27,61 @@ PM> install-package imagnr
 
  Sample
 ```csharp
-//Create a recognizer:
-var imagnr = new Recognizer("YOUR_AZURE_COGNITIVE_SERVICES_API_KEY");
-
-//Add some entities to the recognizer's catalog:
-imagnr.Catalog.Add(new Entity
+public async void TestMethod()
 {
-    Name = "Heinz Ketchup",
-    Tags = new List<Tag>
+    //Create a recognizer:
+    var imagnr = new Recognizer("YOUR_AZURE_COGNITIVE_SERVICES_KEY");
+
+    //Add some entities to the recognizer's catalog:
+    imagnr.Catalog.Add(new Entity
     {
-        new Tag { Value = "Heinz", MinimumSimilarity = 0.8, Required = true, Score = 2 },
-        new Tag { Value = "Tomato", MinimumSimilarity = 0.5 },
-        new Tag { Value = "Ketchup", MinimumSimilarity = 0.8, Required = true }
-    }
-});
+        Name = "Heinz Ketchup",
+        Tags = new List<Tag>
+        {
+            new Tag { Value = "Heinz", MinimumSimilarity = 0.8 },
+            new Tag { Value = "Tomato", MinimumSimilarity = 0.5 },
+            new Tag { Value = "Ketchup", MinimumSimilarity = 0.8 , Score=10}
+        }
+    });
 
-//load image into byte[]
-byte[] image = null;
-using (var fileStream = new FileStream("yourtestimage.jpg", FileMode.Open, FileAccess.Read))
-using (var binaryReader = new BinaryReader(fileStream))
-    image = binaryReader.ReadBytes((int)fileStream.Length);
+    imagnr.Catalog.Add(new Entity
+    {
+        Name = "Heinz Yellow Mustard",
+        Tags = new List<Tag>
+        {
+            new Tag { Value = "Heinz", MinimumSimilarity = 0.8},
+            new Tag { Value = "Yellow", MinimumSimilarity = 0.5 },
+            new Tag { Value = "Mustard", MinimumSimilarity = 0.8, Score=10}
+        }
+    });
 
-//Search for entity tags in image (async)
-var results = await imagnr.Search(image);
+    imagnr.Catalog.Add(new Entity
+    {
+        Name = "Heinz Sweet Relish",
+        Tags = new List<Tag>
+        {
+            new Tag { Value = "Heinz", MinimumSimilarity = 0.8},
+            new Tag { Value = "Sweet", MinimumSimilarity = 0.5 },
+            new Tag { Value = "Relish", MinimumSimilarity = 0.8, Score=10}
+        }
+    });
 
-//Search for entity tags in image (sync)
-var results = imagnr.Search(image).Result;
+    //Search for entity tags in images
+    var results0 = await imagnr.Search(GetImageAsByteArray("images\\heinz\\ketchup.jpg"));
+    var results1 = await imagnr.Search(GetImageAsByteArray("images\\heinz\\mustard.jpg"));
+    var results2 = await imagnr.Search(GetImageAsByteArray("images\\heinz\\relish.jpg"));
+}
+
+private static byte[] GetImageAsByteArray(string imageFilePath)
+{
+    using (var fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read))
+    using (var binaryReader = new BinaryReader(fileStream))
+        return binaryReader.ReadBytes((int)fileStream.Length);
+}
 
 ```
+
+IMPORTANT: You must set your valid api key and image paths 
 
 ## References used to create this project
 * https://docs.microsoft.com/en-us/nuget/guides/create-net-standard-packages-vs2017

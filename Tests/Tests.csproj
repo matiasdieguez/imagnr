@@ -63,22 +63,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\Heinz\ccheinz1.jpg">
+    <Content Include="Images\Heinz\ketchup.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Heinz\heinz3.jpg">
+    <Content Include="Images\Heinz\mustard.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Heinz\heinz938785.jpg">
+    <Content Include="Images\Heinz\relish.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Heinz\HeinzKetchup-1.jpg">
+    <Content Include="Images\HeinzKetchup\ccheinz1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Heinz\HeinzTomatoKetchups.jpg">
+    <Content Include="Images\HeinzKetchup\heinz3.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Heinz\Heinz_Tomato_Ketchup.JPG">
+    <Content Include="Images\HeinzKetchup\heinz938785.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HeinzKetchup\HeinzKetchup-1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HeinzKetchup\HeinzTomatoKetchups.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\HeinzKetchup\Heinz_Tomato_Ketchup.JPG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Natura\mayonesa_natura_2900cm3.jpg">
