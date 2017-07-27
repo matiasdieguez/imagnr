@@ -88,5 +88,8 @@ IMPORTANT: You must set your valid api key and image paths
 * https://docs.microsoft.com/en-us/nuget/guides/create-net-standard-packages-vs2017
 * https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/quickstarts/csharp#RecognizeText
 
-#Tags
+##Tags
 Computer Vision, Azure, Cognitive Services, OCR, Image Recognition, Brand Recognition, Text Recognition, Tag Recognition
+
+##Resources
+Icons made by http://www.freepik.com from https://www.flaticon.com/ licensed by http://creativecommons.org/licenses/by/3.0/ 
